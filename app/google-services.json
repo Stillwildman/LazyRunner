@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "430469813753",
+    "firebase_url": "https://lazyrunner-1006b.firebaseio.com",
+    "project_id": "lazyrunner-1006b",
+    "storage_bucket": "lazyrunner-1006b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430469813753:android:deab98baa7a8c273",
+        "android_client_info": {
+          "package_name": "com.stillwildman.lazyrunner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "430469813753-gs926hno6j6s6pbmmjhfdfen3dqvngkv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stillwildman.lazyrunner",
+            "certificate_hash": "c452068504edf89aac75cd695ac96b40901e8fa9"
+          }
+        },
+        {
+          "client_id": "430469813753-dpiudgeiuaqkprj767534e058s66alkv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhiHpOoTwUSfeoCMCuazr28ZeHLYS_tqQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "430469813753-dpiudgeiuaqkprj767534e058s66alkv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

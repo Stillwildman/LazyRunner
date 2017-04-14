@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">LazyRunner</string>
+    <string name="app_launch_slogan">Lazy Runner !</string>
+
+    <!-- Exception Tips -->
+    <string name="google_api_places_unavailable">The Google Places API was UNAVAILABLE!!</string>
+
+    <!-- Project ID or Keys -->
+    <string name="project_backend_client_id">430469813753-dpiudgeiuaqkprj767534e058s66alkv.apps.googleusercontent.com</string>
+    <string name="google_maps_api_key">AIzaSyB6s6_S73hSDxSpxDl7CMQYTJNZI8lGIqw</string>
+
+    <!-- Menu or Drawer -->
+    <string name="menu_logout">Sign Out</string>
+
+    <!-- Image Content Description -->
+    <string name="image_content_app_logo">App Logo</string>
+    <string name="image_content_google_favicon">Google Logo</string>
+
+    <!-- Login -->
+    <string name="login_hint_email">Email Address</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_sign_in">Sign In</string>
+    <string name="login_sign_in_with_google">Sign In with Google</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+</resources>

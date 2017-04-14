@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="@dimen/padding_size_xl"
+              android:background="@color/md_light_blue_A400"
+              android:animateLayoutChanges="true">
+
+    <LinearLayout
+        android:id="@+id/layout_appLogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="@dimen/icon_common_size_xl"
+            android:layout_height="@dimen/icon_common_size_xl"
+            android:layout_marginRight="@dimen/padding_size_m"
+            android:layout_marginEnd="@dimen/padding_size_m"
+            android:src="@drawable/ic_logo_runner"
+            android:contentDescription="@string/image_content_app_logo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_launch_slogan"
+            android:textSize="@dimen/font_text_size_super"
+            android:textColor="@color/md_grey_50"
+            android:textStyle="bold|italic"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_signIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_size_xxl"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/btn_signInWithGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_size_m"
+            android:layout_marginBottom="@dimen/padding_size_l"
+            style="@style/Base.Widget.AppCompat.Button"
+            android:background="@drawable/background_common_button_3">
+
+            <ImageView
+                android:layout_width="@dimen/icon_common_size_l"
+                android:layout_height="@dimen/icon_common_size_l"
+                android:contentDescription="@string/image_content_google_favicon"
+                android:src="@drawable/ic_google_favicon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/padding_size_l"
+                android:layout_marginStart="@dimen/padding_size_l"
+                android:text="@string/login_sign_in_with_google"
+                android:textSize="@dimen/font_text_size_m"
+                android:textStyle="bold"/>
+
+        </FrameLayout>
+
+        <EditText
+            android:id="@+id/edit_login_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="@string/login_hint_email"/>
+
+        <EditText
+            android:id="@+id/edit_login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/login_hint_password"/>
+        
+        <Button
+            android:id="@+id/btn_signIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_sign_in"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_text_size_m"
+            android:layout_marginTop="@dimen/padding_size_m"
+            android:background="@drawable/background_common_button_2"/>
+        
+    </LinearLayout>
+
+</FrameLayout>
