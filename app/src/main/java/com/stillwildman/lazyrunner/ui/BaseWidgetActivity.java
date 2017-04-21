@@ -14,7 +14,7 @@ import com.stillwildman.lazyrunner.R;
  * Created by vincent.chang on 2017/4/14.
  */
 
-public abstract class BaseWidgetActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public abstract class BaseWidgetActivity extends BaseFireActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     protected abstract String getToolbarTitle();
     protected abstract boolean enableDrawer();
@@ -34,6 +34,8 @@ public abstract class BaseWidgetActivity extends BaseActivity implements Navigat
     protected void init() {
         intToolbar();
         initDrawer();
+
+        onWidgetsReady();
     }
 
     private void intToolbar() {
@@ -56,8 +58,6 @@ public abstract class BaseWidgetActivity extends BaseActivity implements Navigat
 
             navigationView.setNavigationItemSelectedListener(this);
         }
-
-        onWidgetsReady();
     }
 
     private void findDrawerViews() {

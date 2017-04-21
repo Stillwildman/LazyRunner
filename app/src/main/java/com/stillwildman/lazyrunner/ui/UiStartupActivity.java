@@ -1,7 +1,6 @@
 package com.stillwildman.lazyrunner.ui;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,16 +11,9 @@ import android.widget.LinearLayout;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.stillwildman.lazyrunner.R;
 import com.stillwildman.lazyrunner.utilities.DialogHelper;
-import com.stillwildman.lazyrunner.utilities.Utility;
 
 /**
  * Created by vincent.chang on 2017/4/7.
@@ -68,17 +60,13 @@ public class UiStartupActivity extends BaseGoogleApiActivity {
     }
 
     @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+    protected void onUserSignedIn(FirebaseUser user) {
+        goToMain();
+    }
 
-        if (user != null) {
-            goToMain();
-            Log.i(TAG, "onAuthStateChanged:signed_in: " + user.getUid());
-        }
-        else {
-            prepareToSignIn();
-            Log.i(TAG, "onAuthStateChanged:signed_out");
-        }
+    @Override
+    protected void onUserSignedOut() {
+        prepareToSignIn();
     }
 
     private void goToMain() {
@@ -149,7 +137,7 @@ public class UiStartupActivity extends BaseGoogleApiActivity {
     private void signIn() {
         DialogHelper.showLoadingDialog(this);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(apiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
     }
 
     @Override
@@ -157,40 +145,22 @@ public class UiStartupActivity extends BaseGoogleApiActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Log.i(TAG, "onActivityResult - requestCode: " + requestCode + " resultCode: " + resultCode);
 
-        DialogHelper.dismissDialog();
+        switch (requestCode) {
+            case GOOGLE_SIGN_IN:
+                // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
-            if (result.isSuccess()) {
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
-            }
-            else {
-                // Google Sign In failed, update UI appropriately
-                // ...
-            }
+                if (result.isSuccess()) {
+                    GoogleSignInAccount account = result.getSignInAccount();
+                    firebaseAuthWithGoogle(account);
+                }
+                else {
+                    // Google Sign In failed, update UI appropriately
+                    // ...
+                }
+                break;
         }
+
+        DialogHelper.dismissDialog();
     }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.i(TAG, "firebaseAuthWithGoogle\nAccount ID (Google UID): " + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-
-        fireAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.i(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCredential", task.getException());
-                            Utility.toastShort("Authentication failed.");
-                        }
-                    }
-                });
-    }
-
 }

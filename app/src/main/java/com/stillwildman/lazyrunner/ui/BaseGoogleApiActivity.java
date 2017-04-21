@@ -22,7 +22,7 @@ public abstract class BaseGoogleApiActivity extends BaseFireActivity implements 
     protected abstract GoogleAPIs[] getGoogleAPIs();
     protected abstract void onApiReady();
 
-    protected static final int RC_SIGN_IN = 9001;
+    protected static final int GOOGLE_SIGN_IN = 9001;
 
     protected GoogleApiClient apiClient;
 
