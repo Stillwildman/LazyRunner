@@ -8,9 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.stillwildman.lazyrunner.R;
@@ -19,6 +18,8 @@ import com.stillwildman.lazyrunner.utilities.Utility;
 
 
 public class UiMainActivity extends BaseWidgetActivity  {
+
+    private FrameLayout fragmentContainer;
 
     @Override
     protected int getLayoutId() {
@@ -48,7 +49,7 @@ public class UiMainActivity extends BaseWidgetActivity  {
 
     @Override
     protected void findViews() {
-
+        fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
     }
 
     @Override
@@ -63,10 +64,7 @@ public class UiMainActivity extends BaseWidgetActivity  {
         navName.setText(user.getDisplayName());
         navSnippet.setText(user.getEmail());
 
-        Glide.with(this)
-                .load(user.getPhotoUrl())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(navPhoto);
+        setUserProfilePic(user.getPhotoUrl());
 
         for (UserInfo userInfo : user.getProviderData()) {
             Log.i(TAG, "ProviderID: " + userInfo.getProviderId() + "\nUID: " + userInfo.getUid() + "\nName: "
@@ -87,7 +85,7 @@ public class UiMainActivity extends BaseWidgetActivity  {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return true;
     }
 
@@ -105,21 +103,26 @@ public class UiMainActivity extends BaseWidgetActivity  {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_camera:
-                // Handle the camera action
+            case R.id.nav_demo:
+                goTo(UiDemoActivity.class);
                 break;
+
             case R.id.nav_gallery:
 
                 break;
+
             case R.id.nav_slideshow:
 
                 break;
+
             case R.id.nav_manage:
 
                 break;
+
             case R.id.nav_share:
 
                 break;
+
             case R.id.nav_send:
 
                 break;

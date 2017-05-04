@@ -47,6 +47,9 @@
         <activity
             android:name=".ui.UiMainActivity"/>
 
+        <activity
+            android:name=".ui.UiDemoActivity"/>
+
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.stillwildman.lazyrunner.ui;
 
+import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -8,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.stillwildman.lazyrunner.R;
 
 /**
@@ -75,6 +78,13 @@ public abstract class BaseWidgetActivity extends BaseFireActivity implements Nav
 
     protected void closeDrawer() {
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    protected void setUserProfilePic(Uri photoUrl) {
+        Glide.with(this)
+                .load(photoUrl)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(navPhoto);
     }
 
     @Override

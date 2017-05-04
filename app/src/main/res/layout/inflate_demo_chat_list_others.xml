@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="@dimen/padding_size_m">
+
+    <ImageView
+        android:id="@+id/image_chatHead"
+        android:layout_width="@dimen/icon_common_size_l"
+        android:layout_height="@dimen/icon_common_size_l"
+        android:src="@drawable/ic_good_mood_face"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_size_l"
+        android:paddingStart="@dimen/padding_size_l"
+        android:paddingRight="@dimen/padding_size_m"
+        android:paddingEnd="@dimen/padding_size_m">
+
+        <TextView
+            android:id="@+id/text_chatName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brack"/>
+
+        <TextView
+            android:id="@+id/text_chatMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_chatName"
+            android:layout_marginTop="@dimen/padding_size_l"
+            android:text="000000000000000000000"
+            android:textColor="@color/md_grey_800"/>
+
+        <TextView
+            android:id="@+id/text_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_chatMessage"
+            android:layout_alignRight="@+id/text_chatMessage"
+            android:layout_alignEnd="@+id/text_chatMessage"
+            android:layout_marginTop="@dimen/padding_size_m"
+            android:textSize="@dimen/font_text_size_xs"
+            android:text="2017/05/04 13:30"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

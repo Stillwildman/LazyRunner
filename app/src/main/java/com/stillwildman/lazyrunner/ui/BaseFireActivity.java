@@ -11,6 +11,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.stillwildman.lazyrunner.utilities.DialogHelper;
 import com.stillwildman.lazyrunner.utilities.Utility;
 
@@ -23,7 +25,14 @@ public abstract class BaseFireActivity extends BaseActivity implements FirebaseA
     protected abstract void onUserSignedIn(FirebaseUser user);
     protected abstract void onUserSignedOut();
 
+    protected static final String DATABASE_USERS = "users";
+    protected static final String DATA_USERS_UID = "uid";
+    protected static final String DATA_USERS_NAME = "name";
+    protected static final String DATA_USERS_EMAIL = "email";
+    protected static final String DATA_USERS_PIC_URL = "pic_url";
+
     private FirebaseAuth fireAuth;
+    private DatabaseReference userReference;
 
     @Override
     protected void init() {
@@ -87,5 +96,12 @@ public abstract class BaseFireActivity extends BaseActivity implements FirebaseA
     protected void signFireOut() {
         DialogHelper.showLoadingDialog(this);
         FirebaseAuth.getInstance().signOut();
+    }
+
+    protected DatabaseReference getUserReference() {
+        if (userReference == null)
+            userReference = FirebaseDatabase.getInstance().getReference(DATABASE_USERS);
+
+        return userReference;
     }
 }

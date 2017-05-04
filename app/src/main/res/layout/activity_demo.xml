@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/padding_size_m">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_demo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/edit_inputMessage"/>
+
+    <EditText
+        android:id="@+id/edit_inputMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/btn_sendMessage"
+        android:layout_toStartOf="@+id/btn_sendMessage"
+        android:textSize="@dimen/font_text_size_m"/>
+
+    <ImageButton
+        android:id="@+id/btn_sendMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/recycler_demo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_menu_send"
+        android:background="@drawable/background_common_button_3"/>
+
+</RelativeLayout>

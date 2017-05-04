@@ -1,5 +1,6 @@
 package com.stillwildman.lazyrunner.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -44,6 +45,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (uiHandler == null)
             uiHandler = new Handler();
         return uiHandler;
+    }
+
+    protected void goTo(Class clazz) {
+        goTo(clazz, 0);
+    }
+
+    protected void goTo(Class clazz, int intentFlags) {
+        Intent intent = new Intent(this, clazz);
+
+        if (intentFlags != 0)
+            intent.setFlags(intentFlags);
+
+        startActivity(intent);
     }
 
     protected boolean notNull(Object anyObject) {
