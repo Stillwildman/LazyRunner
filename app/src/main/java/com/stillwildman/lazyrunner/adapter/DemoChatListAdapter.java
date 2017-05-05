@@ -83,12 +83,17 @@ public class DemoChatListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof MyHolderForSelf) {
+        if (holder instanceof MyHolderForSelf)
+        {
             ((MyHolderForSelf) holder).text_chatMessage.setText(chatsList.get(position).message);
+
             if (chatsList.get(position).timestamp != 0)
                 ((MyHolderForSelf) holder).text_timestamp.setText(dateFormat.format(new Date(chatsList.get(position).timestamp)));
+            else
+                ((MyHolderForSelf) holder).text_timestamp.setText("");
         }
-        else {
+        else
+            {
             MyHolderForOthers othersHolder = (MyHolderForOthers) holder;
 
             if (!chatsList.get(position).photo_url.isEmpty())
