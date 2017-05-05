@@ -26,6 +26,7 @@ public abstract class BaseFireActivity extends BaseActivity implements FirebaseA
     protected abstract void onUserSignedOut();
 
     protected static final String DATABASE_USERS = "users";
+    protected static final String DATABASE_CHATS = "chats";
     protected static final String DATA_USERS_UID = "uid";
     protected static final String DATA_USERS_NAME = "name";
     protected static final String DATA_USERS_EMAIL = "email";
@@ -33,6 +34,7 @@ public abstract class BaseFireActivity extends BaseActivity implements FirebaseA
 
     private FirebaseAuth fireAuth;
     private DatabaseReference userReference;
+    private DatabaseReference chatReference;
 
     @Override
     protected void init() {
@@ -103,5 +105,12 @@ public abstract class BaseFireActivity extends BaseActivity implements FirebaseA
             userReference = FirebaseDatabase.getInstance().getReference(DATABASE_USERS);
 
         return userReference;
+    }
+
+    protected DatabaseReference getChatReference() {
+        if (chatReference == null)
+            chatReference = FirebaseDatabase.getInstance().getReference(DATABASE_CHATS);
+
+        return chatReference;
     }
 }
