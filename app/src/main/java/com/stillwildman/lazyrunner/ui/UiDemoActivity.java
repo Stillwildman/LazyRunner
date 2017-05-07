@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -48,6 +49,8 @@ public class UiDemoActivity extends BaseFireActivity {
     protected void init() {
         super.init();
         DialogHelper.showLoadingDialog(this);
+        // TODO For the convenience of demonstrate
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
