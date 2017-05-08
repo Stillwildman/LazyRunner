@@ -40,6 +40,8 @@ public class UiDemoActivity extends BaseFireActivity {
 
     private ChildEventListener eventListener;
 
+    private boolean isInitialAdded;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_demo;
@@ -137,11 +139,13 @@ public class UiDemoActivity extends BaseFireActivity {
         if (chatsAdapter == null) {
             chatsAdapter = new DemoChatListAdapter(this, new ArrayList<ItemsFireChats>(), user.getUid());
 
+            setChatsEventListener();
+
             getChatReference().addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.i(TAG, "MessageSize: " + dataSnapshot.getChildrenCount());
-
+                    /*
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         ItemsFireChats chatsItem = ds.getValue(ItemsFireChats.class);
 
@@ -150,11 +154,7 @@ public class UiDemoActivity extends BaseFireActivity {
                         chatsAdapter.addChatsItem(chatsItem);
                     }
                     recycler.smoothScrollToPosition(chatsAdapter.getLastPosition());
-
-                    setChatsEventListener();
-                    btn_send.setClickable(true);
-
-                    DialogHelper.dismissDialog();
+                    */
                 }
 
                 @Override
@@ -187,12 +187,17 @@ public class UiDemoActivity extends BaseFireActivity {
             eventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                    Log.i(TAG, "onChildAdded! Previous: " + previousChildName);
+
                     ItemsFireChats chatsItem = dataSnapshot.getValue(ItemsFireChats.class);
                     chatsAdapter.addChatsItem(chatsItem);
 
                     int lastVisible = ((LinearLayoutManager) recycler.getLayoutManager()).findLastCompletelyVisibleItemPosition();
 
-                    if (!chatsItem.uid.equals(user.getUid())) {
+                    if (isInitialAdded) {
+                        firstAdded();
+                    }
+                    else if (!chatsItem.uid.equals(user.getUid())) {
                         if (chatsAdapter.getLastPosition() - 1 > lastVisible)
                             Utility.toastShort(chatsItem.name + " : " + chatsItem.message);
                         else
@@ -220,9 +225,21 @@ public class UiDemoActivity extends BaseFireActivity {
                     Log.w(TAG, "EventOnCancelled:\n", databaseError.toException());
                 }
             };
-
+            isInitialAdded = true;
             getChatReference().addChildEventListener(eventListener);
         }
+    }
+
+    private void firstAdded() {
+        btn_send.setClickable(true);
+        DialogHelper.dismissDialog();
+
+        getUiHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isInitialAdded = false;
+            }
+        }, 1000);
     }
 
     private void sendMessageToFirebase(String message) {
