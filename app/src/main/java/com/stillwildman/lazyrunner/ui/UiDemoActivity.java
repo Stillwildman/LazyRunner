@@ -1,5 +1,6 @@
 package com.stillwildman.lazyrunner.ui;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +42,7 @@ public class UiDemoActivity extends BaseFireActivity {
     private ChildEventListener eventListener;
 
     private boolean isInitialAdded;
+    private Handler initialHandler;
 
     @Override
     protected int getLayoutId() {
@@ -92,11 +94,12 @@ public class UiDemoActivity extends BaseFireActivity {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "onDataChanged! dataSnapshotSize: " + dataSnapshot.getChildrenCount());
+                Log.i(TAG, "onDataChanged! UserReference size: " + dataSnapshot.getChildrenCount());
 
                 if (!dataSnapshot.hasChild(user.getUid()))
                     setUserData(user);
                 else {
+                    setUserData(user);
                     initChatsList();
                     Log.i(TAG, "User exists! " + user.getDisplayName() + "\n" + user.getUid());
                 }
@@ -116,7 +119,7 @@ public class UiDemoActivity extends BaseFireActivity {
         if (user.getPhotoUrl() != null)
             photoUrl = user.getPhotoUrl().toString();
 
-        ItemsFireUser userItem = new ItemsFireUser(user.getDisplayName(), user.getEmail(), photoUrl);
+        ItemsFireUser userItem = new ItemsFireUser("Brack", user.getEmail(), photoUrl);
 
         getUserReference().child(user.getUid()).setValue(userItem).addOnCompleteListener(this, new OnCompleteListener<Void>() {
             @Override
@@ -141,29 +144,6 @@ public class UiDemoActivity extends BaseFireActivity {
 
             setChatsEventListener();
 
-            getChatReference().addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.i(TAG, "MessageSize: " + dataSnapshot.getChildrenCount());
-                    /*
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        ItemsFireChats chatsItem = ds.getValue(ItemsFireChats.class);
-
-                        Log.i(TAG, "Retrieved Message - \nMessage: " + chatsItem.message + "\nkey: " + ds.getKey());
-
-                        chatsAdapter.addChatsItem(chatsItem);
-                    }
-                    recycler.smoothScrollToPosition(chatsAdapter.getLastPosition());
-                    */
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.w(TAG, "EventOnCancelled:\n", databaseError.toException());
-                    DialogHelper.dismissDialog();
-                }
-            });
-
             recycler.setAdapter(chatsAdapter);
 
             recycler.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -187,32 +167,24 @@ public class UiDemoActivity extends BaseFireActivity {
             eventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                    Log.i(TAG, "onChildAdded! Previous: " + previousChildName);
-
                     ItemsFireChats chatsItem = dataSnapshot.getValue(ItemsFireChats.class);
-                    chatsAdapter.addChatsItem(chatsItem);
+                    Log.i(TAG, "onChildAdded!\nName: " + chatsItem.name + "\nMessage: " + chatsItem.message);
 
-                    int lastVisible = ((LinearLayoutManager) recycler.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-
-                    if (isInitialAdded) {
-                        firstAdded();
-                    }
-                    else if (!chatsItem.uid.equals(user.getUid())) {
-                        if (chatsAdapter.getLastPosition() - 1 > lastVisible)
-                            Utility.toastShort(chatsItem.name + " : " + chatsItem.message);
-                        else
-                            recycler.smoothScrollToPosition(chatsAdapter.getLastPosition());
-                    }
+                    onNewChatsAdded(chatsItem);
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-
+                    ItemsFireChats chatsItem = dataSnapshot.getValue(ItemsFireChats.class);
+                    Log.i(TAG, "onChildChanged!\nName: " + chatsItem.name + "\nMessage: " + chatsItem.message);
+                    chatsAdapter.updateContent(chatsItem.key, chatsItem.message);
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                    ItemsFireChats chatsItem = dataSnapshot.getValue(ItemsFireChats.class);
+                    Log.i(TAG, "onChildRemoved!\nMessage: " + chatsItem.message + "\nKey: " + chatsItem.key);
+                    chatsAdapter.removeItem(chatsItem.key);
                 }
 
                 @Override
@@ -230,16 +202,36 @@ public class UiDemoActivity extends BaseFireActivity {
         }
     }
 
-    private void firstAdded() {
-        btn_send.setClickable(true);
-        DialogHelper.dismissDialog();
+    private void onNewChatsAdded(ItemsFireChats chatsItem) {
+        chatsAdapter.addChatsItem(chatsItem);
 
-        getUiHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isInitialAdded = false;
-            }
-        }, 1000);
+        int lastVisible = ((LinearLayoutManager) recycler.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+
+        if (isInitialAdded) {
+            firstAdded();
+        }
+        else if (!chatsItem.uid.equals(user.getUid())) {
+            if (chatsAdapter.getLastPosition() - 1 > lastVisible)
+                Utility.toastShort(chatsItem.name + " : " + chatsItem.message);
+            else
+                recycler.smoothScrollToPosition(chatsAdapter.getLastPosition());
+        }
+    }
+
+    private void firstAdded() {
+        if (initialHandler == null) {
+            initialHandler = new Handler();
+            initialHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    isInitialAdded = false;
+                    btn_send.setClickable(true);
+                    DialogHelper.dismissDialog();
+                    recycler.scrollToPosition(chatsAdapter.getLastPosition());
+                    initialHandler = null;
+                }
+            }, 1000);
+        }
     }
 
     private void sendMessageToFirebase(String message) {
@@ -261,6 +253,15 @@ public class UiDemoActivity extends BaseFireActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful())
                     chatsAdapter.updateTimestamp(System.currentTimeMillis(), key);
+            }
+        });
+    }
+
+    public void removeMessageFromFirebase(String key) {
+        getChatReference().child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Utility.toastShort(getString(R.string.delete_completed));
             }
         });
     }

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/padding_size_l">
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_size_l"
+    android:background="?android:selectableItemBackground">
 
     <TextView
         android:id="@+id/text_chatMessage"
@@ -11,7 +14,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:text="000000000000000000000"
-        android:textColor="@color/md_grey_800"/>
+        android:textColor="@color/md_grey_800"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingTop="@dimen/padding_size_xl"
+        android:paddingBottom="@dimen/padding_size_xl"
+        android:paddingLeft="@dimen/padding_size_l"
+        android:paddingStart="@dimen/padding_size_l"
+        android:paddingRight="@dimen/padding_size_l"
+        android:paddingEnd="@dimen/padding_size_l"
+        android:background="@android:drawable/dialog_holo_light_frame"/>
 
     <TextView
         android:id="@+id/text_timestamp"
@@ -20,7 +32,6 @@
         android:layout_below="@+id/text_chatMessage"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="@dimen/padding_size_m"
         android:textSize="@dimen/font_text_size_xs"
         android:text="2017/05/04 13:30"
         android:visibility="visible"/>

@@ -25,4 +25,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- Common -->
+    <string name="delete_completed">Delete Completed!</string>
+    <string name="remove">Remove!</string>
+
 </resources>

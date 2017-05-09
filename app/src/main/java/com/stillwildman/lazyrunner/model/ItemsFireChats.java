@@ -29,4 +29,8 @@ public class ItemsFireChats {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

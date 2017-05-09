@@ -24,13 +24,13 @@
 
     <ImageButton
         android:id="@+id/btn_sendMessage"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/icon_common_size"
         android:layout_height="match_parent"
         android:layout_below="@+id/recycler_demo"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/ic_menu_send"
-        android:background="@drawable/background_common_button_3"
+        android:background="@drawable/background_transparent_button"
         android:clickable="false"/>
 
 </RelativeLayout>

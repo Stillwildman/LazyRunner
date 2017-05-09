@@ -1,8 +1,10 @@
 package com.stillwildman.lazyrunner.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.stillwildman.lazyrunner.R;
 import com.stillwildman.lazyrunner.model.ItemsFireChats;
+import com.stillwildman.lazyrunner.ui.UiDemoActivity;
+import com.stillwildman.lazyrunner.utilities.MenuHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +27,7 @@ import java.util.Locale;
  * Created by vincent.chang on 2017/5/4.
  */
 
-public class DemoChatListAdapter extends RecyclerView.Adapter {
+public class DemoChatListAdapter extends RecyclerView.Adapter implements View.OnLongClickListener {
 
     private final static int CHATS_TYPE_SELF = 0;
     private final static int CHATS_TYPE_OTHERS = 1;
@@ -67,6 +71,31 @@ public class DemoChatListAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public void updateContent(String key, String message) {
+        if (myMessageKeys.containsKey(key)) {
+            for (int i = 0; i < getItemCount(); i++) {
+                if (chatsList.get(i).key.equals(key)) {
+                    chatsList.get(i).setMessage(message);
+                    notifyItemChanged(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void removeItem(String key) {
+        if (myMessageKeys.containsKey(key)) {
+            for (int i = 0; i < getItemCount(); i++) {
+                if (chatsList.get(i).key.equals(key)) {
+                    chatsList.remove(i);
+                    myMessageKeys.remove(key);
+                    notifyItemRemoved(i);
+                    break;
+                }
+            }
+        }
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
@@ -91,6 +120,8 @@ public class DemoChatListAdapter extends RecyclerView.Adapter {
                 ((MyHolderForSelf) holder).text_timestamp.setText(dateFormat.format(new Date(chatsList.get(position).timestamp)));
             else
                 ((MyHolderForSelf) holder).text_timestamp.setText("");
+
+            holder.itemView.setTag(chatsList.get(position).key);
         }
         else
             {
@@ -126,6 +157,8 @@ public class DemoChatListAdapter extends RecyclerView.Adapter {
             super(itemView);
             text_chatMessage = (TextView) itemView.findViewById(R.id.text_chatMessage);
             text_timestamp = (TextView) itemView.findViewById(R.id.text_timestamp);
+
+            itemView.setOnLongClickListener(DemoChatListAdapter.this);
         }
     }
 
@@ -143,6 +176,30 @@ public class DemoChatListAdapter extends RecyclerView.Adapter {
             text_chatMessage = (TextView) itemView.findViewById(R.id.text_chatMessage);
             text_timestamp = (TextView) itemView.findViewById(R.id.text_timestamp);
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        showPopMenu(v);
+        return true;
+    }
+
+    private void showPopMenu(final View view) {
+        PopupMenu popMenu = new PopupMenu(context, view);
+        MenuHelper.setMenuOptions(popMenu.getMenu(), MenuHelper.ACTION_REMOVE);
+
+        popMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == MenuHelper.ACTION_REMOVE) {
+                    String key = (String) view.getTag();
+                    ((UiDemoActivity) context).removeMessageFromFirebase(key);
+                }
+                return true;
+            }
+        });
+
+        popMenu.show();
     }
 
     @Override
