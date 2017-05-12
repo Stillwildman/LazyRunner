@@ -104,7 +104,7 @@ public class UiMainActivity extends BaseWidgetActivity  {
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_demo:
-                goTo(UiDemoActivity.class);
+                goTo(UiDemoChatsActivity.class);
                 break;
 
             case R.id.nav_gallery:

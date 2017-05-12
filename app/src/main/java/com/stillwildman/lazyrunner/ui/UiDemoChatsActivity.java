@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * Created by vincent.chang on 2017/5/3.
  */
 
-public class UiDemoActivity extends BaseFireActivity {
+public class UiDemoChatsActivity extends BaseFireActivity {
 
     private RecyclerView recycler;
     private EditText edit_input;
@@ -99,7 +99,6 @@ public class UiDemoActivity extends BaseFireActivity {
                 if (!dataSnapshot.hasChild(user.getUid()))
                     setUserData(user);
                 else {
-                    setUserData(user);
                     initChatsList();
                     Log.i(TAG, "User exists! " + user.getDisplayName() + "\n" + user.getUid());
                 }
@@ -119,7 +118,7 @@ public class UiDemoActivity extends BaseFireActivity {
         if (user.getPhotoUrl() != null)
             photoUrl = user.getPhotoUrl().toString();
 
-        ItemsFireUser userItem = new ItemsFireUser("Brack", user.getEmail(), photoUrl);
+        ItemsFireUser userItem = new ItemsFireUser(user.getDisplayName(), user.getEmail(), photoUrl);
 
         getUserReference().child(user.getUid()).setValue(userItem).addOnCompleteListener(this, new OnCompleteListener<Void>() {
             @Override
@@ -129,6 +128,8 @@ public class UiDemoActivity extends BaseFireActivity {
                     initChatsList();
                     Log.i(TAG, "User Added!");
                 }
+                else
+                    Log.e(TAG, "User Add failed!");
             }
         });
     }

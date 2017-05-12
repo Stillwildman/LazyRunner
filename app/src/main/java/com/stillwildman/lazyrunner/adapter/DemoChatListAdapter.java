@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.stillwildman.lazyrunner.R;
 import com.stillwildman.lazyrunner.model.ItemsFireChats;
-import com.stillwildman.lazyrunner.ui.UiDemoActivity;
+import com.stillwildman.lazyrunner.ui.UiDemoChatsActivity;
 import com.stillwildman.lazyrunner.utilities.MenuHelper;
 
 import java.text.SimpleDateFormat;
@@ -193,7 +193,7 @@ public class DemoChatListAdapter extends RecyclerView.Adapter implements View.On
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == MenuHelper.ACTION_REMOVE) {
                     String key = (String) view.getTag();
-                    ((UiDemoActivity) context).removeMessageFromFirebase(key);
+                    ((UiDemoChatsActivity) context).removeMessageFromFirebase(key);
                 }
                 return true;
             }

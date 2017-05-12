@@ -48,7 +48,8 @@
             android:name=".ui.UiMainActivity"/>
 
         <activity
-            android:name=".ui.UiDemoActivity"/>
+            android:name=".ui.UiDemoChatsActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 
